@@ -7,6 +7,14 @@
      
      <%@ page import="com.daoimpl.UserDAOImpl" %>
       <%@ page import="java.util.*" %>
+    <%@ page import ="java.io.IOException"%>
+    
+    <%@ page import= "javax.servlet.http.HttpServlet"%>
+    
+    <%@ page import= "javax.servlet.http.HttpServletRequest"%>
+    <%@ page import= "javax.servlet.http.HttpServletResponse"%>
+      
+      
 <!DOCTYPE html>
 <html>
 <head>
@@ -153,38 +161,53 @@ label {
 </head>
 	<body>
 	
-	<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        
-        <form>
-			  <div class="mb-3">
-			    <label for="exampleInputEmail1" class="form-label">Name</label>
-			    <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp">
-			  </div>
-			  
-			  <div class="mb-3">
-			    <label for="exampleInputEmail1" class="form-label">Number of books</label>
-			    <input type="text" class="form-control" id="books" name="books" aria-describedby="emailHelp">
-			  </div>
-	</form>
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button id="btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+	
+	
+		<meta charset="utf-8">
+ 	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+ 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+ 	 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+						  <div class="mb-3">
+						    <label for="exampleInputEmail1" class="form-label">Name</label>
+						    <input type="text" class="form-control" id="uname" name="uname" >
+						  </div>
+						  
+						  <div class="mb-3">
+						    <label for="exampleInputEmail1" class="form-label">Password</label>
+						    <input type="password" class="form-control" id="upassword" name="upassword" >
+						  </div>
+						  
+						   <div class="mb-3">
+						    <label for="exampleInputEmail1" class="form-label">Email</label>
+						    <input type="text" class="form-control" id="email" name="email" >
+						  </div>
+						  
+						  
+						  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <input type="submit" class="btn btn-primary" value="Save">
+                    </div>
+					</form>
+        
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+	
+	
 	
 	
     <div class="container">
@@ -200,14 +223,14 @@ label {
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form>
+                        <form action="doGet">
                             <div class="form-group">
                                 <label class="form-control-label">USERNAME</label>
-                                <input name="uname" type="text" class="form-control">
+                                <input name="name" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">PASSWORD</label>
-                                <input id="password" name="password" type="password" class="form-control" i>
+                                <input id="password" name="password" type="password" class="form-control">
                             </div>
 
                             <div class="col-lg-12 loginbttm">
@@ -215,11 +238,11 @@ label {
                                     <!-- Error Message -->
                                 </div>
                                 <div class="col-lg-6 login-btm login-button">
-                                    <button id="click" type="submit" class="btn btn-outline-primary">LOGIN</button>
+                                    <input id="click" type="submit" class="btn btn-outline-primary" value="LOGIN">
                                 </div>
                                 
                                 <div>
-                                    <button data-bs-toggle="modal" data-bs-target="#add" class="btn btn-outline-primary">Register</button>
+                                    <button style="margin-top:-110px" type="button" data-toggle="modal" data-target="#myModal" class="btn btn-outline-primary">Register</button>
                                 </div>
                             </div>
                         </form>
@@ -228,7 +251,7 @@ label {
                 <div class="col-lg-3 col-md-2"></div>
             </div>
         </div>
-        
+      </div>
         <%!UserDAO dao=new UserDAOImpl();
         
         List<User> users=dao.getAll();
@@ -236,10 +259,12 @@ label {
          boolean b=false;
          %>
         
-        <%
-        String name=request.getParameter("name");
+        <%!protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
         
-        String password=request.getParameter("password");
+        	
+       		 String name=request.getParameter("name");
+        
+       		 String password=request.getParameter("password");
         
         
 		
@@ -265,15 +290,39 @@ label {
 				
 				if(b)
 				{
-			
-					response.sendRedirect("./Home.html");
+					response.sendRedirect("Home.html");
 				}
 			
-		 }%>
+		 }
+		}%>
         
         
+        <%!  User user=new User(); %>
+       <%
+       String userName=request.getParameter("uname"); 
        
-        
-	</div>
+       String userPassword=request.getParameter("upassword");
+       
+       String email=request.getParameter("email");
+       
+      if(userName!=null&&userPassword!=null&&email!=null)
+      {
+    	 
+    	  
+    	  user.setUserName(userName);
+    	  
+    	  user.setPassword(userPassword);
+    	  
+    	  user.setEmail(email);
+    	 
+    	  dao.addUser(user);
+
+      }    
+       
+     %>
+     
+     
+     
+	
 	</body>
 	</html>

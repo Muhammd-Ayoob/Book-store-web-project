@@ -16,29 +16,44 @@ import com.pojos.User;
 
 public class UserDAOImpl implements UserDAO{
 
-StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
+	StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();  
     
 	Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();  
 	 
 	SessionFactory factory = meta.getSessionFactoryBuilder().build();  
 	
-	Session session = factory.openSession();  
 	
-	Transaction t = session.beginTransaction();   
+	  
 	
 	
 	public void addUser(User user)
 	{
 		
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
+		
 		session.save(user);
+		
+		
 		t.commit();
+		
+		session.close();
 	}
 	
 	
 	public User getById(int id)
 	{
+		Session session = factory.openSession();  
+	
+		Transaction t = session.beginTransaction();
+		
 		User user=session.get(User.class,id);
 		
+		t.commit();
+		
+		session.close();
 		return user;
 	}
 	
@@ -46,30 +61,49 @@ StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hi
 	
 	public void update(User user)
 	{
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
 		session.saveOrUpdate(user);
 		
 		t.commit();
+		
+		session.close();
 	}
 
 	
 	
 	public void delete(User user)
 	{
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
 		session.delete(user);
 		
 		t.commit();
+		
+		session.close();
 	}
 	
 	
 	
 	public List<User> getAll()
 	{
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
 		String hql = "FROM User";
 		Query query = session.createQuery(hql);
 		List<User> list = query.list();
 		
+		
 		t.commit();
+		
 		session.close();
+		
 		return list;
 	}
 	
@@ -83,6 +117,10 @@ StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hi
 	
 	public Integer getIdByName(String name)
 	{
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
 		Query query=session.createQuery("from User where userName='"+name+"'");
 		
 		List<User> list=query.list();
@@ -90,6 +128,10 @@ StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hi
 		User user=list.iterator().next();
 		
 		Integer id=user.getUserId();
+		
+		t.commit();
+		
+		session.close();
 		
 		return id;
 	}
@@ -100,6 +142,11 @@ StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hi
 	
 	public User getByName(String name)
 	{
+
+		Session session = factory.openSession();  
+		
+		Transaction t = session.beginTransaction();
+		
 		Query query=session.createQuery("from User where userName='"+name+"'");
 		
 		List<User> list=query.list();

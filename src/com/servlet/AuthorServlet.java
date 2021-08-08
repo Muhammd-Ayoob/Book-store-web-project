@@ -38,7 +38,6 @@ public class AuthorServlet extends HttpServlet {
 		AuthorDao authorDao=new AuthorDAOImpl();
 		
 		
-	
 			
 			if(action.equals("create"))
 			{
