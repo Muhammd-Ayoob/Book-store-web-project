@@ -1,3 +1,4 @@
+<%@page import="com.servlet.UserServlet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -178,7 +179,7 @@ label {
                       <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                     </div>
                     <div class="modal-body">
-                      <form>
+                      <form action="UserAddServlet">
 						  <div class="mb-3">
 						    <label for="exampleInputEmail1" class="form-label">Name</label>
 						    <input type="text" class="form-control" id="uname" name="uname" >
@@ -223,10 +224,10 @@ label {
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form action="doGet">
+                        <form action="UserServlet">
                             <div class="form-group">
                                 <label class="form-control-label">USERNAME</label>
-                                <input name="name" type="text" class="form-control">
+                                <input  id="name" name="name" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">PASSWORD</label>
@@ -238,7 +239,7 @@ label {
                                     <!-- Error Message -->
                                 </div>
                                 <div class="col-lg-6 login-btm login-button">
-                                    <input id="click" type="submit" class="btn btn-outline-primary" value="LOGIN">
+                                    <input type="submit" id="click" class="btn btn-outline-primary" value="LOGIN">
                                 </div>
                                 
                                 <div>
@@ -252,77 +253,6 @@ label {
             </div>
         </div>
       </div>
-        <%!UserDAO dao=new UserDAOImpl();
         
-        List<User> users=dao.getAll();
-        
-         boolean b=false;
-         %>
-        
-        <%!protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        
-        	
-       		 String name=request.getParameter("name");
-        
-       		 String password=request.getParameter("password");
-        
-        
-		
-		 boolean b=false;
-		 if(name!=null&&password!=null)
-		 {
-		 
-				for(User user: users)
-				{
-					
-					if(user.getUserName().equals(name)&&user.getPassword().equals(password))
-					{
-						
-						
-						b=true;
-						break;
-					}
-					else
-					{
-						b=false;
-					}
-				}
-				
-				if(b)
-				{
-					response.sendRedirect("Home.html");
-				}
-			
-		 }
-		}%>
-        
-        
-        <%!  User user=new User(); %>
-       <%
-       String userName=request.getParameter("uname"); 
-       
-       String userPassword=request.getParameter("upassword");
-       
-       String email=request.getParameter("email");
-       
-      if(userName!=null&&userPassword!=null&&email!=null)
-      {
-    	 
-    	  
-    	  user.setUserName(userName);
-    	  
-    	  user.setPassword(userPassword);
-    	  
-    	  user.setEmail(email);
-    	 
-    	  dao.addUser(user);
-
-      }    
-       
-     %>
-     
-     
-     
-	
 	</body>
 	</html>
